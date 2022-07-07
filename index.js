@@ -1,6 +1,7 @@
 var irc = require('irc');
 var ircf = require('irc-formatting');
 
+const fastify = require('fastify')({ logger: true })
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
@@ -15,22 +16,64 @@ client.addListener('message', async function (from, to, message) {
     let pre_title = msg[3].text.replace(']', '').trim()
     let pre_group = msg[3].text.split('-').pop()
 
+    if (pre_category.includes('dupe')) {
+        pre_title = pre_category
+        pre_category = 'PRE'
+        pre_group = 'nuke'
+    }
+
     if (pre_title.toLowerCase().includes('web.h264') && pre_category.includes('PRE')) {
-        pre_category = 'TV-X264'
+        pre_category = 'X264'
+    }
+
+    if (pre_title.toLowerCase().includes('web.h265') && pre_category.includes('PRE')) {
+        pre_category = 'X265'
     }
 
     if (pre_title.includes('COMPLETE')) {
         pre_category = 'BLURAY'
     }
 
-    const pre = await prisma.pre.create({
+    const postPre = await prisma.pre.create({
         data: {
             preCategory: pre_category,
             preTitle: pre_title,
             preGroup: pre_group
         }
     })
-
-    console.log(pre)
-
+    console.log(postPre)
 });
+
+// Declare a route
+fastify.get('/api/pre', async (request, reply) => {
+    let { order, page } = request.query
+    if (!page) {
+        page = 0
+    }
+    if (!order) {
+        order = 'desc'
+    }
+    if (order != 'asc' && order != 'desc') {
+        order = 'desc'
+    }
+    
+    const getPre = await prisma.pre.findMany({
+        skip: page * 20,
+        take: 20,
+        orderBy: {
+            id: order
+        }
+    })
+    return { result: getPre }
+  })
+
+// Run the server!
+const start = async () => {
+    try {
+      await fastify.listen({ port: 8080, host: '0.0.0.0' })
+    } catch (err) {
+      fastify.log.error(err)
+      process.exit(1)
+    }
+  }
+  start()

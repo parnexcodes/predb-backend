@@ -1,1 +1,1 @@
-{"dependencies":{"@prisma/client":"^4.0.0","irc":"^0.5.2","irc-formatting":"1.0.0-rc3","prisma":"^4.0.0"}}
+{"dependencies":{"@prisma/client":"^4.0.0","fastify":"^4.2.0","irc":"^0.5.2","irc-formatting":"1.0.0-rc3","prisma":"^4.0.0"}}
