@@ -14,6 +14,7 @@ datasource db {
 
 model Pre {
   id Int @default(autoincrement()) @id
+  createdAt DateTime @default(now())
   preCategory String
   preTitle String
   preGroup String
