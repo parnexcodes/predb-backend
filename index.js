@@ -16,28 +16,32 @@ client.addListener("message", async function (from, to, message) {
   let pre_title = msg[3].text.replace("]", "").trim();
   let pre_group = msg[3].text.split("-").pop();
 
-  if (pre_category.includes("dupe")) {
+  if (pre_category.includes("dupe") || pre_category.includes('repack') || pre_category.includes('proper') || pre_category.includes('proof')) {
     pre_title = pre_category;
     pre_category = "PRE";
     pre_group = "nuke";
   }
 
   if (
-    pre_title.toLowerCase().includes("web.h264") &&
+    pre_title.toLowerCase().includes("web.h264") || pre_title.toLowerCase().includes("hdtv.h264") &&
     pre_category.includes("PRE")
   ) {
     pre_category = "X264";
   }
 
   if (
-    pre_title.toLowerCase().includes("web.h265") &&
+    pre_title.toLowerCase().includes("web.h265") || pre_title.toLowerCase().includes("x265") &&
     pre_category.includes("PRE")
   ) {
     pre_category = "X265";
   }
 
-  if (pre_title.includes("COMPLETE")) {
+  if (pre_title.includes("COMPLETE") || pre_title.includes("AVC")) {
     pre_category = "BLURAY";
+  }
+
+  if (pre_title.toLowerCase().includes("webflac")) {
+    pre_category = "WEBFLAC";
   }
 
   const postPre = await prisma.pre.create({
