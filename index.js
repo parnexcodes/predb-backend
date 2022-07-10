@@ -36,7 +36,7 @@ client.addListener("message", async function (from, to, message) {
     pre_category = "X265";
   }
 
-  if (pre_title.includes("COMPLETE") || pre_title.includes("AVC")) {
+  if (pre_title.includes("COMPLETE") || pre_title.includes("AVC") && !(pre_title.includes('MBLURAY') || !(pre_title.includes('MDVDR')))) {
     pre_category = "BLURAY";
   }
 
