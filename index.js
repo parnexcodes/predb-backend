@@ -51,7 +51,6 @@ client.addListener("message", async function (from, to, message) {
       preGroup: pre_group,
     },
   });
-  console.log(postPre)
 });
 
 // Declare a route
