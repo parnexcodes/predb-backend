@@ -12,7 +12,8 @@ var client = new irc.Client("irc.opentrackers.org", "parnexsurf", {
 client.addListener("message", async function (from, to, message) {
   let msg = ircf.parse(message);
   let pre_category = msg[3].text;
-  let pre_title = msg[5].text.replace("(", "").replace(')', '').trim()
+  let temp = msg[5].text.replace("(", "").trim()
+  let pre_title = temp.substring(0, temp.lastIndexOf(")")) + ""
   let pre_group = pre_title.split("-").pop();
 
   // if (pre_category.includes("dupe") || pre_category.includes('repack') || pre_category.includes('proper') || pre_category.includes('proof')) {
