@@ -51,7 +51,7 @@ client.addListener("message", async function (from, to, message) {
       preGroup: pre_group,
     },
   });
-  // console.log(postPre)
+  console.log(postPre)
 });
 
 // Declare a route
@@ -61,6 +61,9 @@ fastify.get("/", { prefix: "/api" }, async (request, reply) => {
     endpoints: [
       {
         pre: "/api/pre",
+        cat: "/api/cat?q={category_name}",
+        group: "/api/group?q={group_name}",
+        search: "/api/search?q={search_query}"
       },
     ],
   };
@@ -70,27 +73,17 @@ fastify.get("/*", async (request, reply) => {
   return { error: "Undefined Endpoint" };
 });
 
-fastify.get("/api/pre", async (request, reply) => {
-  let { order, page } = request.query;
-  if (!page) {
-    page = 0;
-  }
-  if (!order) {
-    order = "desc";
-  }
-  if (order != "asc" && order != "desc") {
-    order = "desc";
-  }
+// Import the Routes
+const getPre = require('./routes/getPre')
+const getCat = require('./routes/getCat')
+const getGroup = require('./routes/getGroup')
+const getSearch = require('./routes/getSearch')
 
-  const getPre = await prisma.pre.findMany({
-    skip: page * 20,
-    take: 20,
-    orderBy: {
-      id: order,
-    },
-  });
-  return { result: getPre };
-});
+// Register the Routes
+fastify.register(getPre)
+fastify.register(getCat)
+fastify.register(getGroup)
+fastify.register(getSearch)
 
 // Run the server!
 const start = async () => {
