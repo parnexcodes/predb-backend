@@ -30,8 +30,10 @@ const getPreGroup = async (fastify) => {
                 preGroup: q
             }
         })
+        
+        const totalPre = await prisma.pre.findMany()
 
-        return { totalRls: getGroupRlsCount.length, result: getPreGroup };
+        return { totalPre: totalPre.length, totalRls: getGroupRlsCount.length, result: getPreGroup };
       });
 }
 

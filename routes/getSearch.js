@@ -27,7 +27,9 @@ const getSearch = async (fastify) => {
           },
         })
 
-        return { result: getPreSearch };
+        const totalPre = await prisma.pre.findMany()
+
+        return { totalPre: totalPre.length, result: getPreSearch };
       });
 }
 

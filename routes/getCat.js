@@ -31,7 +31,9 @@ const getCat = async (fastify) => {
             }
         })
 
-        return { totalRls: getCatRlsCount.length, result: getPreCat };
+        const totalPre = await prisma.pre.findMany()
+
+        return { totalPre: totalPre.length, totalRls: getCatRlsCount.length, result: getPreCat };
       });
 }
 

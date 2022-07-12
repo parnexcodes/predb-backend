@@ -21,7 +21,10 @@ const getPre = async(fastify) => {
             id: order,
           },
         });
-        return { result: getPre };
+
+        const totalPre = await prisma.pre.findMany()
+
+        return { totalPre: totalPre.length, result: getPre };
       });
 }
 
