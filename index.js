@@ -5,34 +5,26 @@ const fastify = require("fastify")({ logger: true });
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-var client = new irc.Client("irc.opentrackers.org", "parnexsurf", {
+var client = new irc.Client("irc.opentrackers.org", "iota1476", {
   channels: ["#pre-zenet"]
 });
 
 client.addListener("message", async function (from, to, message) {
   let msg = ircf.parse(message);
-  let pre_category = msg[3].text;
-  let temp = msg[5].text.replace("(", "").trim()
-  let pre_title = temp.substring(0, temp.lastIndexOf(")")) + ""
-  let pre_group = pre_title.split("-").pop();
+  if (msg_arr[1].text == "PRE") {
+    let pre_category = msg[3].text;
+    let temp = msg[5].text.replace("(", "").trim()
+    let pre_title = temp.substring(0, temp.lastIndexOf(")")) + ""
+    let pre_group = pre_title.split("-").pop();
 
-  // if (pre_category.includes("dupe") || pre_category.includes('repack') || pre_category.includes('proper') || pre_category.includes('proof')) {
-  //   pre_title = pre_category;
-  //   pre_category = "PRE";
-  //   pre_group = "nuke";
-  // }
-
-  if (pre_title.includes("COMPLETE") || pre_title.includes("AVC") && !(pre_title.includes('MBLURAY') || !(pre_title.includes('MDVDR')))) {
-    pre_category = "BLURAY";
+    const postPre = await prisma.pre.create({
+      data: {
+        preCategory: pre_category,
+        preTitle: pre_title,
+        preGroup: pre_group,
+      },
+    });
   }
-
-  const postPre = await prisma.pre.create({
-    data: {
-      preCategory: pre_category,
-      preTitle: pre_title,
-      preGroup: pre_group,
-    },
-  });
 });
 
 // Declare a route
