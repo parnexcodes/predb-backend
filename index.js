@@ -11,7 +11,7 @@ var client = new irc.Client("irc.opentrackers.org", "iota1476", {
 
 client.addListener("message", async function (from, to, message) {
   let msg = ircf.parse(message);
-  if (msg_arr[1].text == "PRE") {
+  if (msg[1].text == "PRE") {
     let pre_category = msg[3].text;
     let temp = msg[5].text.replace("(", "").trim()
     let pre_title = temp.substring(0, temp.lastIndexOf(")")) + ""
