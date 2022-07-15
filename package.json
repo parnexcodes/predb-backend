@@ -1,12 +1,20 @@
 {
-	"dependencies": {
+  "name": "predb-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "dependencies": {
 		"@prisma/client": "^4.0.0",
 		"fastify": "^4.2.0",
 		"irc": "^0.5.2",
 		"irc-formatting": "1.0.0-rc3",
 		"prisma": "^4.0.0"
 	},
-	"devDependencies": {
-		"@architect/sandbox": "^5.3.0"
-	}
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
