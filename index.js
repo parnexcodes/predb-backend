@@ -5,17 +5,17 @@ const fastify = require("fastify")({ logger: true });
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-var client = new irc.Client("irc.opentrackers.org", "iota1476", {
-  channels: ["#pre-zenet"]
+var client = new irc.Client("irc.corrupt-net.org", "iota1476", {
+  channels: ["#pre"],
+  port: 6667
 });
 
 client.addListener("message", async function (from, to, message) {
   let msg = ircf.parse(message);
-  if (msg[1].text == "PRE") {
-    let pre_category = msg[3].text;
-    let temp = msg[5].text.replace("(", "").trim()
-    let pre_title = temp.substring(0, temp.lastIndexOf(")")) + ""
-    let pre_group = pre_title.split("-").pop();
+  if (msg[0].text == "PRE:") {
+    let pre_category = msg[2].text;
+    let pre_title = msg[3].text.replace("]", "").trim();
+    let pre_group = msg[3].text.split("-").pop();
 
     const postPre = await prisma.pre.create({
       data: {
